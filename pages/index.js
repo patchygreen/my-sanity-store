@@ -1,6 +1,9 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { client } from '../lib/sanity';
+import imageUrlBuilder from '@sanity/image-url';
+
+const builder = imageUrlBuilder(client)
 
 export default function Home({ products }) {
   console.log('products', products);
@@ -25,14 +28,21 @@ export default function Home({ products }) {
         <div className={styles.grid}>
 
           <div className={styles.grid}>
+
+          <div className={styles.grid}>
             {products.map((product) => {
+              const {defaultProductVariant = {}} = product
+              const {images} = defaultProductVariant
               return (
                 <a key={product._id} href="#" className={styles.card}>
+                  <img src={builder.image(images[0]).width(300)} />
                   <h3>{product.title}</h3>
                   <p>{product.blurb.en}</p>
                 </a>
               )
             })}
+          </div>
+
           </div>
         </div>
       </main>
